@@ -1,0 +1,27 @@
+diff --git a/tests/Makefile b/tests/Makefile
+index 5b7884f319e0..f4ec3428d29b 100644
+--- a/tests/Makefile
++++ b/tests/Makefile
+@@ -43,3 +43,8 @@ tests-no-security:
+ 	@for test in test*.pl; do \
+ 		perl $$test -i -q; \
+ 	done
++
++tests-as-installed:
++	@for test in test*.pl; do \
++		perl $$test -q --path="/usr/sbin/"; \
++	done
+diff --git a/tests/harness.pl b/tests/harness.pl
+index 7ed4fa09f5b6..fc7f937a3ca0 100755
+--- a/tests/harness.pl
++++ b/tests/harness.pl
+@@ -858,7 +858,8 @@ sub __isns_prep_test {
+ 	GetOptions('verbose+' => \$__isns_verbose,
+ 		   "quiet"    => \$__isns_quiet,
+ 		   "fast"     => \$__isns_quick,
+-		   "insecure" => \$__isns_insecure);
++		   "insecure" => \$__isns_insecure,
++		   "path=s" => \$__isns_bin);
+ 	$__isns_verbose = 0 if ($__isns_quiet);
+ 	$__isns_security = 0 if ($__isns_insecure);
+ 
