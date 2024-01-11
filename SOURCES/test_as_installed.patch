@@ -1,0 +1,47 @@
+From 420ae1af11fad3151b5bfa676e7218168e4e6f3f Mon Sep 17 00:00:00 2001
+From: Chris Leech <cleech@redhat.com>
+Date: Wed, 26 May 2021 10:00:17 -0700
+Subject: [PATCH 1/1] run tests with binaries from arbitrary paths
+
+---
+ tests/Makefile   | 4 ++++
+ tests/harness.py | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/tests/Makefile b/tests/Makefile
+index 372572d..2c61183 100644
+--- a/tests/Makefile
++++ b/tests/Makefile
+@@ -48,3 +48,7 @@ quick: tests-no-security
+ tests-no-security:
+ 	@echo running tests without security -- takes about 2 minutes
+ 	./test-isns.py
++
++tests-as-installed:
++	@echo running tests from installed executables -- takes about 2 minutes
++	./test-isns.py -s --path="/usr/sbin"
+diff --git a/tests/harness.py b/tests/harness.py
+index 39fc5e6..b710f5a 100644
+--- a/tests/harness.py
++++ b/tests/harness.py
+@@ -137,6 +137,9 @@ def new_initArgParsers(self):
+     self._main_parser.add_argument('-d', '--debug', dest='debug',
+             action='store_true',
+             help='Enable developer debugging')
++    self._main_parser.add_argument('--path', dest='path',
++            action='store', default='..',
++            help='Set isns bin path, to run from installed executables')
+ 
+ def new_parseArgs(self, argv):
+     """
+@@ -148,6 +151,7 @@ def new_parseArgs(self, argv):
+     Global.verbosity = self.verbosity
+     Global.security = self.security
+     Global.debug = self.debug
++    Global._isns_bin_dir = self.path
+     dprint("found: verbosity=%d, security=%s" % \
+            (Global.verbosity, Global.security))
+ 
+-- 
+2.31.1
+
