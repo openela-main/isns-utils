@@ -1,6 +1,6 @@
 Name:           isns-utils
 Version:        0.99
-Release:        1%{?dist}
+Release:        1%{?dist}.1
 Summary:        The iSNS daemon and utility programs
 
 Group:          System Environment/Daemons
@@ -9,11 +9,15 @@ URL:            https://github.com/open-iscsi/open-isns
 Source0:        https://github.com/open-iscsi/open-isns/archive/v%{version}.tar.gz#/open-isns-%{version}.tar.gz
 Patch1:		fix-openssl-argument-order-in-tests.patch
 Patch2:		test_as_installed.patch
+# https://issues.redhat.com/browse/RHEL-219474
+# https://github.com/open-iscsi/open-isns/commit/56718d4e9d1a4f51c30697b5c0534144bb41c9bb
+Patch3:		isns-utils-0.99-CVE-2026-55995.patch
 
 BuildRequires:  openssl-devel automake pkgconfig systemd-devel systemd
 Requires(post): systemd-units
 Requires(preun): systemd-units
 Requires(postun): systemd-units
+Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 
 
 %description
@@ -109,6 +113,9 @@ chmod 755 %{buildroot}%{_libdir}/libisns.so.0
 
 
 %changelog
+* Thu Jul 30 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 0.99-1.1
+- Fix double-free vulnerabilities in attrs.c error paths (CVE-2026-55995)
+
 * Fri Mar 22 2019 Chris Leech <cleech@redhat.com> - 0.99-1
 - rebase to 0.99
 
