@@ -1,15 +1,15 @@
-From 420ae1af11fad3151b5bfa676e7218168e4e6f3f Mon Sep 17 00:00:00 2001
+From 224f1d45934346f1836c75d9ce257029960543b9 Mon Sep 17 00:00:00 2001
 From: Chris Leech <cleech@redhat.com>
 Date: Wed, 26 May 2021 10:00:17 -0700
 Subject: [PATCH 1/1] run tests with binaries from arbitrary paths
 
 ---
  tests/Makefile   | 4 ++++
- tests/harness.py | 4 ++++
- 2 files changed, 8 insertions(+)
+ tests/harness.py | 6 +++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/tests/Makefile b/tests/Makefile
-index 372572d..2c61183 100644
+index 372572d..93bcac7 100644
 --- a/tests/Makefile
 +++ b/tests/Makefile
 @@ -48,3 +48,7 @@ quick: tests-no-security
@@ -19,9 +19,9 @@ index 372572d..2c61183 100644
 +
 +tests-as-installed:
 +	@echo running tests from installed executables -- takes about 2 minutes
-+	./test-isns.py -s --path="/usr/sbin"
++	./test-isns.py --path="/usr/sbin"
 diff --git a/tests/harness.py b/tests/harness.py
-index 39fc5e6..b710f5a 100644
+index 39fc5e6..83091ea 100644
 --- a/tests/harness.py
 +++ b/tests/harness.py
 @@ -137,6 +137,9 @@ def new_initArgParsers(self):
@@ -42,6 +42,15 @@ index 39fc5e6..b710f5a 100644
      dprint("found: verbosity=%d, security=%s" % \
             (Global.verbosity, Global.security))
  
+@@ -415,7 +419,7 @@ def isns_external_test(client_config, args):
+     """
+     logfile = get_logfile_from_config(client_config.path)
+ 
+-    cmd = ['%s/%s' % (Global._isns_bin_dir, args[0]),
++    cmd = ['%s/%s' % ("..", args[0]),
+            '-c', client_config.path] + args[1:]
+     exit_val = run_cmd(cmd, logfile)
+     return (logfile, exit_val)
 -- 
-2.31.1
+2.55.0
 
