@@ -1,6 +1,6 @@
 Name:           isns-utils
 Version:        0.101
-Release:        4%{?dist}.1
+Release:        5%{?dist}
 Summary:        The iSNS daemon and utility programs
 
 License:        LGPLv2+
@@ -8,7 +8,6 @@ URL:            https://github.com/open-iscsi/open-isns
 Source0:        https://github.com/open-iscsi/open-isns/archive/v%{version}.tar.gz#/open-isns-%{version}.tar.gz
 Source1:        isnsd.service
 Patch1:         test_as_installed.patch
-# https://issues.redhat.com/browse/RHEL-219470
 # https://github.com/open-iscsi/open-isns/commit/56718d4e9d1a4f51c30697b5c0534144bb41c9bb
 Patch2:         isns-utils-0.101-CVE-2026-55995.patch
 
@@ -108,8 +107,8 @@ install -p -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/isnsd.service
 
 
 %changelog
-* Thu Jul 30 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 0.101-4.1
-- Fix CVE-2026-55995: prevent double-free in attrs.c error paths
+* Tue Aug 11 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 0.101-5
+- Fix CVE-2026-55995: double-free in attrs.c error paths
 
 * Tue Sep 14 2021 Chris Leech <cleech@redhat.com> - 0.101-4
 - #1934951 remove DSA/SHA-1 based authentication support
